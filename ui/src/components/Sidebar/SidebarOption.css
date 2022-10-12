@@ -1,0 +1,11 @@
+.sidebarOption {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.sidebarOption > h2 {
+    font-weight: 600;
+    font-size: 20px;
+    margin-left: 20px;
+}
