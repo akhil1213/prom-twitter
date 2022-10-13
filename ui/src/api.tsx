@@ -2,6 +2,7 @@ import axios from "axios"
 import {Tweet} from "./typings"
 
 export const searchTweetsByKeyWord = async (searchText, paginatedToken): Promise<Tweet[]> => {
+  console.log(searchText);
     const url = !paginatedToken ? 
                   `http://localhost:4000/search-tweets/${searchText}` :
                   `http://localhost:4000/search-tweets/${searchText}/${paginatedToken}`

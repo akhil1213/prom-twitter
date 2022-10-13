@@ -1,6 +1,6 @@
 import React from 'react'
 import {Card, Button, Row, Col} from 'antd'
-import { Tweet } from "./typings"
+import { Tweet } from "../typings"
 
 interface Props extends Tweet {
     onTweetClick: Function,

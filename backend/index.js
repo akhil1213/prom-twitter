@@ -16,9 +16,13 @@ app.get("/search-tweets/:searchQuery", (req, res, next) => {
       "Authorization": `Bearer ${bearer_token}`
     }
   }).then((twitter_res) => {
-      const tweets = twitter_res.data.data;
-      tweets[tweets.length-1].paginationToken = twitter_res.data.meta.next_token
-      res.json(tweets) 
+      const tweets = twitter_res.data?.data;
+      if (!tweets || tweets?.length === 0) res.json([])
+      else{
+        tweets[tweets.length-1].paginationToken = twitter_res.data.meta.next_token
+        res.json(tweets) 
+      }
+      
   })
 })
 
@@ -29,9 +33,14 @@ app.get("/search-tweets/:searchQuery/:paginatedToken", (req, res, next) => {
         "Authorization": `Bearer ${bearer_token}`
       }
     }).then((twitter_res) => {
-        const tweets = twitter_res.data.data;
-        tweets[tweets.length-1].paginationToken = twitter_res.data.meta.next_token
-        res.json(tweets) 
+        const tweets = twitter_res.data?.data;
+        console.log(tweets);
+        console.log(!tweets);
+        if (!tweets || tweets?.length === 0) res.json([])
+        else{
+          tweets[tweets.length-1].paginationToken = twitter_res.data.meta.next_token
+          res.json(tweets) 
+        }
     })
 })
 
