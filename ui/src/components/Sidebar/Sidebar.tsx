@@ -1,5 +1,5 @@
 import React from "react";
-import "./Sidebar.css";
+import "./Sidebar.css"
 import SidebarOption from "./SidebarOption.tsx";
 import { SettingOutlined, SearchOutlined  } from '@ant-design/icons';
 
