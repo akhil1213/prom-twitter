@@ -1,7 +1,11 @@
 import React from "react";
 import "./SidebarOption.css";
 
-function SidebarOption({ text, Icon }) {
+interface Props {
+  text: string
+  Icon: React.ForwardRefExoticComponent<any>
+}
+function SidebarOption({ text, Icon }: Props) {
   return (
     <div className="sidebarOption">
       <Icon />

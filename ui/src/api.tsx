@@ -1,14 +1,15 @@
 import axios from "axios"
-import {Tweet} from "./typings"
+import {Tweet, User} from "./typings"
+
+// in production code this should be retrieved from .env file and based on which environment our codebase is in (dev, stage, prod, qa, etc)
+const API_URL = "http://localhost:4000/"
 
 export const searchTweetsByKeyWord = async (searchText, paginatedToken): Promise<Tweet[]> => {
-  console.log(searchText);
+    if (searchText === "") return [];
     const url = !paginatedToken ? 
-                  `http://localhost:4000/search-tweets/${searchText}` :
-                  `http://localhost:4000/search-tweets/${searchText}/${paginatedToken}`
-    const res = await axios.get(
-      url
-    );
+                  `${API_URL}search-tweets/${searchText}` :
+                  `${API_URL}search-tweets/${searchText}/${paginatedToken}`
+    const res = await axios.get(url);
     if (res.status === 200) {
       return res.data;
     }
@@ -17,7 +18,7 @@ export const searchTweetsByKeyWord = async (searchText, paginatedToken): Promise
 
 export const getRetweets = async (tweetId): Promise<any[]> => {
   const res = await axios.get(
-    `http://localhost:4000/retweets/${tweetId}`
+    `${API_URL}retweets/${tweetId}`
   );
   if (res.status === 200) return res.data;
   throw new Error("Get retweets failed with error message");
@@ -26,7 +27,7 @@ export const getRetweets = async (tweetId): Promise<any[]> => {
 
 export const getLikers = async (tweetId): Promise<any[]> => {
   const res = await axios.get(
-    `http://localhost:4000/retweets/${tweetId}`
+    `${API_URL}retweets/${tweetId}`
   );
   if (res.status === 200) return res.data;
   throw new Error("Get retweets failed with error message");

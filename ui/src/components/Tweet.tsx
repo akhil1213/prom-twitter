@@ -3,7 +3,7 @@ import {Card, Button, Row, Col} from 'antd'
 import { Tweet } from "../typings"
 
 interface Props extends Tweet {
-    onTweetClick: Function,
+    onTweetClick: (fetchingType:string, tweetId:string) => void,
 }
 
 function TweetComponent({id, text, onTweetClick}: Props) {

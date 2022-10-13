@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {useInfiniteQuery, useQueryClient} from 'react-query'
+import { useInfiniteQuery, useQueryClient } from 'react-query'
 import { searchTweetsByKeyWord } from '../api.tsx'
 import flattenArray from "../helpers/flattenArray.tsx"
 import Tweet from './Tweet.tsx'
@@ -7,12 +7,12 @@ import UsersListModal from './UsersList.tsx'
 import { Space, Spin, Button } from 'antd'
 
 function Timeline({searchText}:{searchText:string}) {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isFetchRetweeters, setIsFetchRetweeters] = useState(false);
-    const [isFetchLikers, setIsFetchLikers] = useState(false);
-    const [selectedTweetId, setSelectedTweetId] = useState(null);
-    const [paginatedToken, setPaginatedToken] = useState(null);
-    const [prevSearchText, setPrevSearchText] = useState(searchText);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [isFetchRetweeters, setIsFetchRetweeters] = useState<boolean>(false);
+    const [isFetchLikers, setIsFetchLikers] = useState<boolean>(false);
+    const [selectedTweetId, setSelectedTweetId] = useState<null|string>(null);
+    const [paginatedToken, setPaginatedToken] = useState<null|string>(null);
+    const [prevSearchText, setPrevSearchText] = useState<null|string>(searchText);
     const queryClient = useQueryClient()
     
 
@@ -56,24 +56,24 @@ function Timeline({searchText}:{searchText:string}) {
         setIsFetchLikers,
         selectedTweetId
     }
+    const flattenedTimeline = flattenArray(timelineResult?.pages);
+
     return (
         <Space direction="vertical" size="middle" style={{ display: 'flex', cursor: "pointer" }} >
             {/* Tweets Container */}
-            {flattenArray(timelineResult?.pages).map((row,i) => {
+            {flattenedTimeline.map((row,i) => {
                 return <Tweet key={row.id} id={row.id} onTweetClick={onTweetClick} text={row.text}/>
             })}
             {
-                flattenArray(timelineResult?.pages).length > 0 
+                flattenedTimeline.length > 0 
                     ?
                         <Button
                             onClick={() => {
                                 if (hasNextPage) {
-                                    const freshTweets = flattenArray(timelineResult?.pages);
-                                    setPaginatedToken(freshTweets[freshTweets.length-1].paginationToken);
+                                    setPaginatedToken(flattenedTimeline[flattenedTimeline.length-1].paginationToken);
                                     fetchNextPage();
                                 }
                             }}
-                            // Disable the Next Page button until we know a next page is available
                             disabled={!hasNextPage}
                         >
                             Next Page
