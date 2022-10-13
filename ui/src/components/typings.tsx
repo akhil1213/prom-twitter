@@ -3,5 +3,8 @@ interface User{
     name:string
     username:string
 }
-
-export {User}
+interface Tweet {
+    id: string
+    text: string
+}
+export {User, Tweet}

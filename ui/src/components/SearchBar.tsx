@@ -4,14 +4,11 @@ import { SearchOutlined } from '@ant-design/icons';
 import { useQuery } from 'react-query'
 import { searchTweetsByKeyWord } from './api.tsx'
 
-function SearchBar({ searchText, setSearchText }:{searchText:string, setSearchText:Function}) {
-  const {isFetching} = useQuery(["timeline", searchText], () => searchTweetsByKeyWord(searchText), {
-      enabled: !!searchText
-  });
-
+function SearchBar({ setSearchText }:{searchText:string, setSearchText:Function}) {
+  
   return (
     <div>
-      <Input disabled={isFetching} size="large" onChange={(e) => setSearchText(e.target.value)} placeholder="Search Tweets" prefix={<SearchOutlined />} />
+      <Input size="large" onChange={(e) => setSearchText(e.target.value)} placeholder="Search Tweets" prefix={<SearchOutlined />} />
     </div>
   );
 }

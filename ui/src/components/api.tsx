@@ -1,15 +1,16 @@
 import axios from "axios"
+import {Tweet} from "./typings"
 
-interface Tweet {
-    text: string
-    id: number
-}
-
-export const searchTweetsByKeyWord = async (searchText): Promise<Tweet[]> => {
+export const searchTweetsByKeyWord = async (searchText, paginatedToken): Promise<Tweet[]> => {
+    const url = !paginatedToken ? 
+                  `http://localhost:4000/search-tweets/${searchText}` :
+                  `http://localhost:4000/search-tweets/${searchText}/${paginatedToken}`
     const res = await axios.get(
-      `http://localhost:4000/search-tweets/${searchText}`
+      url
     );
-    if (res.status === 200) return res.data;
+    if (res.status === 200) {
+      return res.data;
+    }
     throw new Error("Search tweets failed with error message");
 }
 

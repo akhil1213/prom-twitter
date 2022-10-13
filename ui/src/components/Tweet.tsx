@@ -1,12 +1,12 @@
 import React from 'react'
 import {Card, Button, Row, Col} from 'antd'
+import { Tweet } from "./typings"
 
-interface Props {
-    text:string, 
-    id:string,
+interface Props extends Tweet {
     onTweetClick: Function,
 }
-function Tweet({id, text, onTweetClick}: Props) {
+
+function TweetComponent({id, text, onTweetClick}: Props) {
     return (
         <Card >
             <p>{text}</p>
@@ -23,4 +23,4 @@ function Tweet({id, text, onTweetClick}: Props) {
     );
 }
 
-export default Tweet;
+export default TweetComponent;

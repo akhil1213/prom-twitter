@@ -9,13 +9,29 @@ app.use(cors({
 const bearer_token = "AAAAAAAAAAAAAAAAAAAAADpHiAEAAAAAJXDrI%2BHPG68hGk3%2BQCnlWs5iQn0%3DyeF9Gt6wvFY2kphG4yHIEJfoTJrTr2wt82IIBhAt2WNefWLifm"
 
 app.get("/search-tweets/:searchQuery", (req, res, next) => {
-    const searchQuery = req.params.searchQuery;
-    axios.get(`https://api.twitter.com/2/tweets/search/recent/?query=${searchQuery}`,{
+  // reusable code
+  const {searchQuery} = req.params;
+  axios.get(`https://api.twitter.com/2/tweets/search/recent/?query=${searchQuery}`,{
+    headers: {
+      "Authorization": `Bearer ${bearer_token}`
+    }
+  }).then((twitter_res) => {
+      const tweets = twitter_res.data.data;
+      tweets[tweets.length-1].paginationToken = twitter_res.data.meta.next_token
+      res.json(tweets) 
+  })
+})
+
+app.get("/search-tweets/:searchQuery/:paginatedToken", (req, res, next) => {
+    const {searchQuery, paginatedToken} = req.params;
+    axios.get(`https://api.twitter.com/2/tweets/search/recent/?query=${searchQuery}&pagination_token=${paginatedToken}`,{
       headers: {
         "Authorization": `Bearer ${bearer_token}`
       }
     }).then((twitter_res) => {
-        res.json(twitter_res.data.data) 
+        const tweets = twitter_res.data.data;
+        tweets[tweets.length-1].paginationToken = twitter_res.data.meta.next_token
+        res.json(tweets) 
     })
 })
 
@@ -30,8 +46,8 @@ app.get("/get-timeline", (req, res, next) => {
     }
 )
 
-app.get("/retweets", (req, res, next) => {
-    const tweetId = req.body['tweet_id']
+app.get("/retweets/:tweetId", (req, res, next) => {
+    const tweetId = req.params.tweetId
     axios.get(`https://api.twitter.com/2/tweets/${tweetId}/retweeted_by`,{
         headers: {
             "Authorization": `Bearer ${bearer_token}`
@@ -40,10 +56,19 @@ app.get("/retweets", (req, res, next) => {
         res.json(twitter_res.data.data) 
     })
 
-    
-    res.json(["Tony","Lisa","Michael","Ginger","Food"]);
 
    });
+
+app.get("/retweets/:tweetId", (req, res, next) => {
+  const tweetId = req.params.tweetId
+  axios.get(`https://api.twitter.com/2/tweets/${tweetId}/liking_users`,{
+      headers: {
+          "Authorization": `Bearer ${bearer_token}`
+      }
+  }).then((twitter_res) => {
+      res.json(twitter_res.meta.result_count) 
+  })
+});
 
 app.listen(4000, () => {
  console.log("Server running on port 4000");

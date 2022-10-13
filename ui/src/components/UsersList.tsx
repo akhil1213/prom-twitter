@@ -1,5 +1,5 @@
 import { List } from 'antd'
-import { User } from "./typings.tsx"
+import { User } from "./typings"
 
 interface Props {
     users: User[]
